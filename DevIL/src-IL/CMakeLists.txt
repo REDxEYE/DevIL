@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 4.0)
 project(DevIL)
 
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 include (TestBigEndian)
 
 option(BUILD_SHARED_LIBS "Build with shared (.DLL .SO) libraries." ON)
