@@ -75,6 +75,16 @@ test_big_endian(WORDS_BIGENDIAN)
 # SET(JPEG_INCLUDE_DIRS ...)
 # SET(JPEG_LIBRARIES ...)
 
+if(IL_STATIC_DEPS AND UNIX AND NOT APPLE)
+    set(_IL_SAVED_LIBRARY_SUFFIXES "${CMAKE_FIND_LIBRARY_SUFFIXES}")
+
+    # Force find_library() based modules to select lib*.a.
+    set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
+
+    # FindPNG -> FindZLIB, and modern FindZLIB has an explicit static switch.
+    set(ZLIB_USE_STATIC_LIBS ON)
+endif()
+
 #LibPng
 option(IL_PNG_LIB "Custom location for LibPng" OFF)
 if (NOT IL_PNG_LIB)
@@ -130,6 +140,11 @@ option(IL_MNG_LIB "Custom location for MNG" OFF)
 if (NOT IL_MNG_LIB)
     find_package(MNG)
 endif (NOT IL_MNG_LIB)
+
+if(IL_STATIC_DEPS AND UNIX AND NOT APPLE)
+    set(CMAKE_FIND_LIBRARY_SUFFIXES "${_IL_SAVED_LIBRARY_SUFFIXES}")
+    unset(_IL_SAVED_LIBRARY_SUFFIXES)
+endif()
 
 # TODO: check for libmng, others?
 
